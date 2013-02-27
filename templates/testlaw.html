@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>This is my learning page</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+	<script type="text/javascript" src='/static/js/jquery.js' ></script>
+	<!---script type="text/javascript" src='/static/js/jquery.cycle.all.js' ></script---->
+	<script type="text/javascript" src='/static/js/bootstrap.js'></script>
+	
+</head>
+<body>
+	<div id='container'>
+		<div class="row">
+		  <div class="span12">
+		  	<h1>Parking Ticket Projects.</h1>
+		  </div>
+		  
+		</div>
+		<div class="row">
+		  <div class="span4">
+		  	<form action='/test/' method='post'>{% csrf_token %}
+				{{ form.as_p }}
+				<input type='submit' name='chance_of_ticket' value='chance of ticket'>
+				<input type='submit' name='tell_me_the_laws' value='GET_LAW'>
+			</form>
+			<hr>
+			<a href='/ticket/'>tickets</a>
+		  </div>
+		  <div class="span8">
+
+		  		{% for law in raws %}
+		  		{{ law.violation }}, {{ law.street }}, {{ law.meters }}<br>
+		  		{% endfor %}
+		  </div>
+		</div>
+	</div>
+</body>
+</html>

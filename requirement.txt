@@ -1,0 +1,7 @@
+Django==1.4.3
+argparse==1.2.1
+django-extensions==1.0.3
+psycopg2==2.4.6
+wsgiref==0.1.2
+django-bootstrap-form
+Python-Geocoder
