@@ -12,42 +12,42 @@ def home(request):
 	adForm = addressForm()	
 	if request.method == 'POST':
 		if 'chance_of_ticket' in request.POST:
-				address = request.POST['address']
-				stime = request.POST['start_time']
-				etime = request.POST['end_time']
-				dname = request.POST['day_of_week']
-				#import pdb; pdb.set_trace()
-				if address:
-					longlat = getPoint(address)
-					pnt = fromstr('POINT(%f %f)' % longlat,srid=4269)
-				else:
-					pnt = fromstr('POINT(-122.398595809937 37.7840061485767)', srid=4269)
-				
-				ticket_frequency = getTicketFrequency(pnt,stime,etime)
-				ticket_frequency['num_patrol'] = 'XXX'
-				ticket_frequency['chance_of_ticket'] = '33'
+			address = request.POST['address']
+			stime = request.POST['start_time']
+			etime = request.POST['end_time']
+			dname = request.POST['day_of_week']
+			#import pdb; pdb.set_trace()
+			if address:
+				longlat = getPoint(address)
+				pnt = fromstr('POINT(%f %f)' % longlat,srid=4269)
+			else:
+				pnt = fromstr('POINT(-122.398595809937 37.7840061485767)', srid=4269)
+			
+			ticket_frequency = getTicketFrequency(pnt,stime,etime)
+			ticket_frequency['num_patrol'] = 'XXX'
+			ticket_frequency['chance_of_ticket'] = '33'
 
-				return render_to_response('home.html',{'TF': ticket_frequency,'address':address,'form': adForm}, context_instance=RequestContext(request))
+			return render_to_response('home.html',{'TF': ticket_frequency,'address':address,'form': adForm}, context_instance=RequestContext(request))
 
 		elif 'tell_me_the_laws' in request.POST:
-				address = request.POST['address']
-				if address:					
-					getlaws = getLaw(address)
-					
-					vcounter = []
-					for law in getlaws:
-						vcounter.append(law['description'])
-					from collections import Counter
-					vc = Counter(vcounter).most_common(2)
-					most_violated_role = vc[0][0]
-					sec_most_violated_role = vc[1][0]
-					if len(getlaws) == 0:
-						getlaws = 'No';
-					return render_to_response('home.html',{'form': adForm, 'PL': getlaws, 'mvr': most_violated_role,
-					'smvr':sec_most_violated_role, 'address': address}, context_instance=RequestContext(request))
-				else:
-					getlaws = getLaw('1045 PINE ST, San Francisco, CA')
-				return render_to_response('home.html',{'form': adForm, 'PL': getlaws,'address': address}, context_instance=RequestContext(request))
+			address = request.POST['address']
+			if address:					
+				getlaws = getLaw(address)
+				
+				vcounter = []
+				for law in getlaws:
+					vcounter.append(law['description'])
+				from collections import Counter
+				vc = Counter(vcounter).most_common(2)
+				most_violated_role = vc[0][0]
+				sec_most_violated_role = vc[1][0]
+				if len(getlaws) == 0:
+					getlaws = 'No';
+				return render_to_response('home.html',{'form': adForm, 'PL': getlaws, 'mvr': most_violated_role,
+				'smvr':sec_most_violated_role, 'address': address}, context_instance=RequestContext(request))
+			else:
+				getlaws = getLaw('1045 PINE ST, San Francisco, CA')
+			return render_to_response('home.html',{'form': adForm, 'PL': getlaws,'address': address}, context_instance=RequestContext(request))
 
 	else:
 		return render_to_response('home.html',{'form': adForm,}, context_instance=RequestContext(request))
@@ -59,10 +59,10 @@ def getPoint(address):
 		
 		result = geocoder.geocode(address)
 		if result.is_success():
-				longlat = result.get_location()
-				lat = float(str(longlat[1]))
-				lang = float(str(longlat[0]))
-				return lat,lang
+			longlat = result.get_location()
+			lat = float(str(longlat[1]))
+			lang = float(str(longlat[0]))
+			return lat,lang
 
 
 def getTicketFrequency(location,stime, etime):
